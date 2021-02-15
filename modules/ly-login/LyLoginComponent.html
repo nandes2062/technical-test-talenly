@@ -1,0 +1,36 @@
+<div class="xl:w-4/12 lg:w-5/12 md:w-8/12 sm:w-9/12 w-full bg-white shadow-md rounded px-8 pt-10 pb-8 mb-4 flex flex-col">
+  <div class="flex justify-center mb-10">
+    <Logo />
+  </div>
+  <div class="mb-4 text-left">
+    <label class="block text-sm mb-2" for="username">
+      Email
+    </label>
+    <input class="shadow appearance-none border rounded w-full py-2 px-3" type="email" placeholder="Email">
+  </div>
+  <div class="mb-6">
+    <span class="flex justify-between">
+      <label class="block text-sm mb-2" for="password">
+        Password
+      </label>
+      <a class="inline-block align-baseline text-blue-800 text-sm hover:text-blue-600" href="#">
+        ¿Se te olvidó la contraseña?
+      </a>
+    </span>
+    <input class="shadow appearance-none border border-red rounded w-full py-2 px-3 mb-3" type="password">
+    <!-- <p class="text-red text-xs italic">
+      Please choose a password.
+    </p> -->
+  </div>
+  <div class="flex flex-wrap items-center justify-between">
+    <button class="bg-blue-800 hover:bg-blue-700 w-full text-white py-2 px-4 mb-5 rounded" type="button">
+      Iniciar sesión
+    </button>
+    <p class="py-4 text-center w-full">
+      <span>
+        ¿Nuevo en Talently?
+      </span>
+      <NuxtLink class="text-blue-800 hover:text-blue-700" to="/register">Crea una cuenta.</NuxtLink>
+    </p>
+  </div>
+</div>
