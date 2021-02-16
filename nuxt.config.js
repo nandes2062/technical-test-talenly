@@ -26,9 +26,12 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/services/',
+    '~/plugins/click-outside.js',
+    '~/plugins/vee-validate.js'
   ],
 
-  // Auto import components: https://go.nuxtjs.dev/config-components
+  // import components: https://github.com/nuxt/components
   components: [
     { path: '~/components', extensions: ['vue'] },
     { path: '~/modules', extensions: ['vue'] }
@@ -44,15 +47,61 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    // Doc: https://github.com/avil13/vue-sweetalert2#nuxtjs
+    ['vue-sweetalert2/nuxt'],
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
+    [
+      'nuxt-fontawesome', {
+        imports: [
+          {
+            set: '@fortawesome/free-solid-svg-icons',
+            icons: ['fas']
+          },
+          {
+            set: '@fortawesome/free-regular-svg-icons',
+            icons: ['far']
+          },
+          {
+            set:'@fortawesome/free-brands-svg-icons',
+            icons: ['fab']
+          }
+        ]
+      }
+    ]
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
-
+  axios: {
+    baseURL: process.env.NUXT_APP_API_URL
+  },
+  /*
+  ** Auth module configuration
+  ** See https://auth.nuxtjs.org/
+  */
+  auth: {
+    plugins: ['~/plugins/auth.js'],
+    strategies: {
+      login: {
+        scheme: 'local',
+        endpoints: {
+          login: { url: '/auth/login', method: 'post' },
+          logout: false,
+          user: false
+        },
+        token: {
+          property: 'access_token',
+          required: true,
+          type: 'Bearer',
+          maxAge: 'expires_in'
+        }
+      }
+    }
+  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    transpile: ["vee-validate/dist/rules"]
   },
   tailwindcss: {
     cssPath: '~/assets/css/tailwind.css',

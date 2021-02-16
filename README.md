@@ -3,6 +3,9 @@
 ## Build Setup
 
 ```bash
+# copy .env file
+$ cp .env.develop .env
+
 # install dependencies
 $ npm install
 

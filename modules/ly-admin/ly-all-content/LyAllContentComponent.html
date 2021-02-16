@@ -1,0 +1,28 @@
+<aside class="lg:w-4/12 w-full">
+  <div class="w-full rounded-md bg-gray-100 pb-4">
+    <h2 class="font-heading font-bold text-2xl px-4 pt-4 pb-3">Contenido</h2>
+    <article v-for="item in allContent" class="flex py-2 px-4 hover:bg-gray-200">
+      <div class="flex justify-between w-full">
+        <div class="flex">
+          <div @click="playingVideo(item)" class="bg-black w-26 h-16 rounded-md mr-4 cursor-pointer">
+          </div>
+          <div>
+            <h3 class="font-bold text-gray-700 py-1">
+              {{ item.title }}
+            </h3>
+            <p class="text-gray-600 text-xs">
+              <font-awesome-icon class="mr-2" :icon="['far', 'clock']" />
+              1 min
+            </p>
+          </div>
+        </div>
+        <div class="text-blue-700 h-full flex items-center">
+          <font-awesome-icon v-show="item.progress === 100" class="text-2xl" :icon="['fas', 'check-circle']" />
+          <svg v-show="item.progress !== 100" width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11.0169" cy="11.0169" r="9.74576" stroke="black" stroke-opacity="0.06" stroke-width="2.54237"/>
+          </svg>
+        </div>
+      </div>
+    </article>
+  </div>
+</aside>

@@ -1,6 +1,9 @@
 <template>
-  <div class="container">
-    <LyLogin />
+  <div v-if="!this.$auth.loggedIn" class="login-container font-body">
+    <ly-login />
+  </div>
+  <div v-else class="container mx-auto font-body">
+    <ly-admin />
   </div>
 </template>
 
@@ -17,7 +20,7 @@ export default {}
 body {
   @apply bg-indigo-100;
 }
-.container {
+.login-container {
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
