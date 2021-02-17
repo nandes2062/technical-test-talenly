@@ -3,6 +3,7 @@ export default {
   name: 'LyAllContentComponent',
   data () {
     return {
+      loading: true,
       allContent: null
     }
   },
@@ -23,6 +24,7 @@ export default {
         const { content } = await this.$ServiceRepository.ContentService.index()
         this.allContent = content
         this.playingVideo(content[0])
+        this.loading = false
       } catch (error) {
         this.$swal({
           position: 'top-end',
@@ -31,6 +33,7 @@ export default {
           showConfirmButton: false,
           timer: 1500
         })
+        this.loading = false
       }
     },
     playingVideo (payload) {

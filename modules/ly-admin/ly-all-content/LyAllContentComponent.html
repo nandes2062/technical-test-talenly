@@ -1,7 +1,9 @@
 <aside class="lg:w-4/12 w-full">
   <div class="w-full rounded-md bg-gray-100 pb-4">
     <h2 class="font-heading font-bold text-2xl px-4 pt-4 pb-3">Contenido</h2>
+    <Loading v-if="loading" class="w-full h-8" />
     <article
+      v-else
       v-for="item in allContent"
       class="flex py-2 px-4"
       :class="$currentContentId === item.id ? 'bg-gray-300' : 'hover:bg-gray-200'"

@@ -6,6 +6,7 @@ export default {
     return {
       comments: null,
       amountComments: null,
+      loading: true,
       loadingCreate: false,
       loadingEdit: false,
       postData: {
@@ -51,6 +52,7 @@ export default {
           }
         }).reverse()
         this.amountComments = comments.length
+        this.loading = false
       } catch (error) {
         this.$swal({
           position: 'top-end',
@@ -59,6 +61,7 @@ export default {
           showConfirmButton: false,
           timer: 1500
         })
+        this.loading = false
       }
     },
     async createComment () {
@@ -133,13 +136,6 @@ export default {
         }
       })
     },
-    dropdownComment (id, state) {
-      this.comments = this.comments.map((v, k) => {
-        if (id === v.id) {
-          return { ...v, dropdown: state }
-        } else { return v }
-      })
-    },
     editComment (id, state) {
       this.comments = this.comments.map((v, k) => {
         if (id === v.id) {
@@ -152,6 +148,11 @@ export default {
         if (id === v.id) {
           return { ...v, loading: state }
         } else { return v }
+      })
+    },
+    closeDropdown () {
+      this.comments = this.comments.map((v, k) => {
+        return { ...v, dropdown: false }
       })
     }
   }

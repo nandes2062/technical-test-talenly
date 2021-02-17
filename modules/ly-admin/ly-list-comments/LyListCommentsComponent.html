@@ -9,13 +9,14 @@
     <Loading v-if="loadingCreate" class="text-blue-700 w-full mt-2" />
     <input v-else v-model="postData.content" @keyup.enter="createComment()" class="appearance-none bg-gray-300 border rounded w-full py-2 px-3" type="text" placeholder="Agregar comentario">
   </section>
-  <section v-for="comment in comments" class="relative flex w-full rounded-sm bg-gray-100 p-3 mb-3">
+  <Loading v-if="loading" class="w-full h-8" />
+  <section v-else v-for="comment in comments" class="relative flex w-full rounded-sm bg-gray-100 p-3 mb-3">
     <template v-if="$meId === comment.user.id">
-      <button @click="dropdownComment(comment.id, true)" class="absolute right-0 top-0 mr-2 mt-2 w-4 h-8">
+      <button @click="comment.dropdown = true" class="absolute right-0 top-0 mr-2 mt-2 w-4 h-8">
         <font-awesome-icon :icon="['fas', 'ellipsis-v']" />
       </button>
       <menu v-if="comment.dropdown" class="w-30 px-0 overflow-hidden mt-2 mr-2 absolute top-0 right-0 bg-gray-100 border shadow-xs rounded-lg z-10">
-        <span v-click-outside="dropdownComment(comment.id, false)"></span>
+        <span v-click-outside="closeDropdown"></span>
         <ul class="w-full">
           <li class="flex">
             <button @click="editComment(comment.id, true)" class="text-left px-4 py-3 hover:bg-gray-200 w-full">
