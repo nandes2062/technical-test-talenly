@@ -6,7 +6,7 @@
       v-else
       v-for="item in allContent"
       class="flex py-2 px-4"
-      :class="$currentContentId === item.id ? 'bg-gray-300' : 'hover:bg-gray-200'"
+      :class="$currentContentId === item.id ? 'bg-gray-200' : 'hover:bg-gray-200'"
     >
       <div class="flex justify-between w-full">
         <div class="flex">
@@ -28,10 +28,18 @@
           </div>
         </div>
         <div class="text-blue-700 h-full flex items-center">
-          <font-awesome-icon v-show="item.progress === 100" class="text-2xl" :icon="['fas', 'check-circle']" />
-          <svg v-show="item.progress !== 100" width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="11.0169" cy="11.0169" r="9.74576" stroke="black" stroke-opacity="0.06" stroke-width="2.54237"/>
-          </svg>
+          <font-awesome-icon v-if="item.progress >= 10" class="text-3xl" :icon="['fas', 'check-circle']" />
+          <radial-progress-bar
+            v-else
+            innerStrokeColor="#e2e8f0"
+            startColor="#3182ce"
+            stopColor="#3182ce"
+            :strokeWidth="4"
+            :innerStrokeWidth="4"
+            :diameter="32"
+            :completed-steps="item.progress"
+            :total-steps="totalSteps">
+          </radial-progress-bar>
         </div>
       </div>
     </article>

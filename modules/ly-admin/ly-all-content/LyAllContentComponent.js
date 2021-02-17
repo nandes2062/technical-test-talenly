@@ -1,16 +1,41 @@
-import { mapGetters, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
+import RadialProgressBar from 'vue-radial-progress'
 export default {
   name: 'LyAllContentComponent',
+  components: {
+    RadialProgressBar
+  },
   data () {
     return {
       loading: true,
-      allContent: null
+      allContent: null,
+      completedSteps: 4,
+      totalSteps: 10
+    }
+  },
+  watch: {
+    currentContent: {
+      handler (newVal) {
+        if (newVal) {
+          this.allContent = this.allContent.map((v, k) => {
+            if (v.id === newVal.id) {
+              return newVal
+            } else {
+              return v
+            }
+          })
+        }
+      },
+      inmediate: true
     }
   },
   mounted () {
     this.indexContent()
   },
   computed: {
+    ...mapState({
+      currentContent: state => state.currentContent.currentContent
+    }),
     ...mapGetters({
       $currentContentId: 'currentContent/currentContentId'
     })
