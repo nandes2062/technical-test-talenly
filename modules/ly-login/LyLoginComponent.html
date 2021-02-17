@@ -47,7 +47,10 @@
       <p class="text-red-600 text-xs italic">{{ errors[0] }}</p>
     </ValidationProvider>
     <div class="flex flex-wrap items-center justify-between">
-      <button type="submit" class="bg-blue-800 hover:bg-blue-700 w-full text-white py-2 px-4 mb-5 rounded">
+      <button v-if="loading" type="button" class="bg-blue-800 hover:bg-blue-700 w-full flex justify-center text-white py-2 px-4 mb-5 rounded">
+        <Loading />
+      </button>
+      <button v-else type="submit" class="bg-blue-800 hover:bg-blue-700 w-full text-white py-2 px-4 mb-5 rounded">
         Iniciar sesión
       </button>
       <p class="py-4 text-center w-full">

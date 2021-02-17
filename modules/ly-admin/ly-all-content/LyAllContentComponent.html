@@ -1,10 +1,19 @@
 <aside class="lg:w-4/12 w-full">
   <div class="w-full rounded-md bg-gray-100 pb-4">
     <h2 class="font-heading font-bold text-2xl px-4 pt-4 pb-3">Contenido</h2>
-    <article v-for="item in allContent" class="flex py-2 px-4 hover:bg-gray-200">
+    <article
+      v-for="item in allContent"
+      class="flex py-2 px-4"
+      :class="$currentContentId === item.id ? 'bg-gray-300' : 'hover:bg-gray-200'"
+    >
       <div class="flex justify-between w-full">
         <div class="flex">
-          <div @click="playingVideo(item)" class="bg-black w-26 h-16 rounded-md mr-4 cursor-pointer">
+          <div @click="playingVideo(item)" class="bg-black w-26 h-16 rounded-md mr-4 cursor-pointer flex justify-center items-center">
+            <font-awesome-icon
+              class="text-gray-400 text-3xl"
+              :class="$currentContentId === item.id ? 'invisible' : ''"
+              :icon="['far', 'play-circle']"
+            />
           </div>
           <div>
             <h3 class="font-bold text-gray-700 py-1">

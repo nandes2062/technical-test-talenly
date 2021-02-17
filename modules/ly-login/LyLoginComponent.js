@@ -3,6 +3,7 @@ export default {
   name: 'LyLogin',
   data () {
     return {
+      loading: false,
       postData: {
         email: '',
         password: ''
@@ -17,25 +18,26 @@ export default {
       destroyMe: 'me/destroyMe'
     }),
     login () {
+      this.loading = true
       this.$auth.loginWith('login', {
         data: this.postData
+      }).then(() => {
+        this.loading = false
       }).catch((err) => {
-        this.$refs.form.setErrors({
-          email: ['Compruebe si su email está escrito correctamente'],
-          password: ['Compruebe si su password está escrito correctamente']
-        })
+        this.loading = false
         this.$swal({
           position: 'top-end',
           icon: 'error',
           title: err,
+          text: 'Los datos ingresados son incorrectos',
           showConfirmButton: false,
-          timer: 1500
+          timer: 1800
         }).then(() => {
           setTimeout(() => {
             this.$nextTick(() => {
               this.$refs.form.reset()
             })
-          }, 5000)
+          }, 6000)
         })
       })
     }

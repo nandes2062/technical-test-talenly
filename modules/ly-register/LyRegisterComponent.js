@@ -2,6 +2,7 @@ export default {
   name: 'LyRegisterComponent',
   data () {
     return {
+      loading: false,
       postData: {
         name: '',
         email: '',
@@ -11,6 +12,7 @@ export default {
   },
   methods: {
     async register () {
+      this.loading = true
       try {
         const { success, errors } = await this.$ServiceRepository.AuthService.register(this.postData)
         if (success) {
@@ -27,6 +29,7 @@ export default {
             showConfirmButton: false,
             timer: 1500
           })
+          this.loading = false
         }
       } catch (err) {
         this.$swal({
@@ -36,6 +39,7 @@ export default {
           showConfirmButton: false,
           timer: 1500
         })
+        this.loading = false
       }
     },
     login () {
@@ -45,6 +49,7 @@ export default {
           password: this.postData.password
         }
       }).then(() => {
+        this.loading = false
         this.$router.push('/')
       }).catch((err) => {
         this.$swal({
@@ -54,6 +59,7 @@ export default {
           showConfirmButton: false,
           timer: 1500
         })
+        this.loading = false
       })
     }
   }

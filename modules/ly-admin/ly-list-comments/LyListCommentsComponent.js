@@ -1,29 +1,158 @@
-// import { mapState, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
+import moment from 'moment'
 export default {
   name: 'LyListCommentsComponent',
   data () {
     return {
-      allContent: null,
-      showDropdown: false
+      comments: null,
+      amountComments: null,
+      loadingCreate: false,
+      loadingEdit: false,
+      postData: {
+        content: '',
+        user_id: null,
+        content_id: 1
+      }
     }
   },
-  mounted () {
-    this.indexContent()
+  watch: {
+    $currentContentId: {
+      handler (newVal) {
+        if (newVal) {
+          this.showComments()
+        }
+      },
+      inmediate: true
+    }
   },
   computed: {
-    // ...mapState({
-    //   allContent: state => state.allContent.allContent
-    // })
+    ...mapGetters({
+      $currentContentId: 'currentContent/currentContentId',
+      $meId: 'me/meId'
+    })
+  },
+  mounted () {
+    moment.locale('es')
+    if (this.$currentContentId) {
+      this.showComments()
+    }
   },
   methods: {
-    async indexContent () {
+    async showComments () {
       try {
-        const { content } = await this.$ServiceRepository.ContentService.index()
-        this.allContent = content
-      } catch (error) {}
+        const { comments } = await this.$ServiceRepository.ContentService.showComments(this.$currentContentId)
+        this.comments = comments.map((v, k) => {
+          return {
+            ...v,
+            ago: moment(v.updated_at).fromNow(),
+            dropdown: false,
+            edit: false,
+            loading: false
+          }
+        }).reverse()
+        this.amountComments = comments.length
+      } catch (error) {
+        this.$swal({
+          position: 'top-end',
+          icon: 'error',
+          title: error,
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
     },
-    closeDropdown () {
-      this.showDropdown = !this.showDropdown
+    async createComment () {
+      this.postData = {
+        content: this.postData.content,
+        user_id: this.$meId,
+        content_id: this.$currentContentId
+      }
+      this.loadingCreate = true
+      try {
+        await this.$ServiceRepository.CommentService.create(this.postData)
+        await this.showComments()
+        this.loadingCreate = false
+        this.postData.content = ''
+      } catch (error) {
+        this.$swal({
+          position: 'top-end',
+          icon: 'error',
+          title: error,
+          showConfirmButton: false,
+          timer: 1500
+        })
+        this.loadingCreate = false
+      }
+    },
+    async updateComment ([$event], id) {
+      this.loadingComment(id, true)
+      try {
+        await this.$ServiceRepository.CommentService.update(id, { content: $event.target.value })
+        await this.showComments()
+        this.editComment(id, false)
+        this.loadingComment(id, false)
+      } catch (error) {
+        this.$swal({
+          position: 'top-end',
+          icon: 'error',
+          title: error,
+          showConfirmButton: false,
+          timer: 1500
+        })
+        this.editComment(id, false)
+        this.loadingComment(id, false)
+      }
+    },
+    deleteComment (id) {
+      this.$swal({
+        title: 'Eliminar comentario',
+        text: '¿Eliminar tu comentario definitivamente?',
+        icon: 'error',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            await this.$ServiceRepository.CommentService.delete(id)
+            this.$swal(
+              'Comentario eliminado',
+              'Se eliminó correctamente',
+              'success'
+            )
+            this.showComments()
+          } catch (error) {
+            this.$swal({
+              position: 'top-end',
+              icon: 'error',
+              title: error,
+              showConfirmButton: false,
+              timer: 1500
+            })
+          }
+        }
+      })
+    },
+    dropdownComment (id, state) {
+      this.comments = this.comments.map((v, k) => {
+        if (id === v.id) {
+          return { ...v, dropdown: state }
+        } else { return v }
+      })
+    },
+    editComment (id, state) {
+      this.comments = this.comments.map((v, k) => {
+        if (id === v.id) {
+          return { ...v, edit: state }
+        } else { return v }
+      })
+    },
+    loadingComment (id, state) {
+      this.comments = this.comments.map((v, k) => {
+        if (id === v.id) {
+          return { ...v, loading: state }
+        } else { return v }
+      })
     }
   }
 }

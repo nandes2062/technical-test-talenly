@@ -1,4 +1,4 @@
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'LyAllContentComponent',
   data () {
@@ -9,6 +9,11 @@ export default {
   mounted () {
     this.indexContent()
   },
+  computed: {
+    ...mapGetters({
+      $currentContentId: 'currentContent/currentContentId'
+    })
+  },
   methods: {
     ...mapActions({
       setCurrentContent: 'currentContent/setCurrentContent'
@@ -17,7 +22,16 @@ export default {
       try {
         const { content } = await this.$ServiceRepository.ContentService.index()
         this.allContent = content
-      } catch (error) {}
+        this.playingVideo(content[0])
+      } catch (error) {
+        this.$swal({
+          position: 'top-end',
+          icon: 'error',
+          title: error,
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
     },
     playingVideo (payload) {
       this.setCurrentContent(payload)

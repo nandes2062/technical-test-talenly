@@ -1,43 +1,58 @@
 <div class="w-full lg:pr-4 font-body">
-  <h3 class="text-xl font-bold mb-4 pt-4">3 Comentarios</h3>
+  <h3 class="text-xl font-bold mb-4 pt-4">{{ amountComments }} Comentarios</h3>
   <section class="flex w-full rounded-sm bg-gray-100 p-3 mb-3">
     <div class="pr-3">
       <span class="relative inline-flex justify-center rounded-full items-center bg-blue-700 w-8 h-8">
         <font-awesome-icon class="text-white absolute" :icon="['far', 'user']" />
       </span>
     </div>
-    <input class="appearance-none bg-gray-300 border rounded w-full py-2 px-3" type="text" placeholder="Agregar comentario">
+    <Loading v-if="loadingCreate" class="text-blue-700 w-full mt-2" />
+    <input v-else v-model="postData.content" @keyup.enter="createComment()" class="appearance-none bg-gray-300 border rounded w-full py-2 px-3" type="text" placeholder="Agregar comentario">
   </section>
-  <section class="relative flex w-full rounded-sm bg-gray-100 p-3 mb-3">
-    <button @click="showDropdown = !showDropdown" class="absolute right-0 top-0 mr-2 mt-2 w-4 h-8">
-      <font-awesome-icon :icon="['fas', 'ellipsis-v']" />
-    </button>
-    <menu v-click-outside="closeDropdown" v-if="showDropdown" class="w-30 px-0 overflow-hidden mt-2 mr-2 absolute top-0 right-0 bg-gray-100 border shadow-xs rounded-lg z-10">
-      <ul class="w-full">
-        <li class="flex">
-          <button class="text-left px-4 py-3 hover:bg-gray-200 w-full">
-            <font-awesome-icon class="mr-2" :icon="['far', 'edit']" />
-            Editar
-          </button>
-        </li>
-        <li>
-          <button class="text-left px-4 py-3 hover:bg-gray-200 w-full">
-            <font-awesome-icon class="mr-2" :icon="['far', 'trash-alt']" />
-            Eliminar
-          </button>
-        </li>
-      </ul>
-    </menu>
+  <section v-for="comment in comments" class="relative flex w-full rounded-sm bg-gray-100 p-3 mb-3">
+    <template v-if="$meId === comment.user.id">
+      <button @click="dropdownComment(comment.id, true)" class="absolute right-0 top-0 mr-2 mt-2 w-4 h-8">
+        <font-awesome-icon :icon="['fas', 'ellipsis-v']" />
+      </button>
+      <menu v-if="comment.dropdown" class="w-30 px-0 overflow-hidden mt-2 mr-2 absolute top-0 right-0 bg-gray-100 border shadow-xs rounded-lg z-10">
+        <span v-click-outside="dropdownComment(comment.id, false)"></span>
+        <ul class="w-full">
+          <li class="flex">
+            <button @click="editComment(comment.id, true)" class="text-left px-4 py-3 hover:bg-gray-200 w-full">
+              <font-awesome-icon class="mr-2" :icon="['far', 'edit']" />
+              Editar
+            </button>
+          </li>
+          <li>
+            <button @click="deleteComment(comment.id)" class="text-left px-4 py-3 hover:bg-gray-200 w-full">
+              <font-awesome-icon class="mr-2" :icon="['far', 'trash-alt']" />
+              Eliminar
+            </button>
+          </li>
+        </ul>
+      </menu>
+    </template>
     <span class="relative inline-flex justify-center rounded-full items-center w-8 h-8 bg-gray-600 mr-4">
       <font-awesome-icon class="text-white absolute" :icon="['far', 'user']" />
     </span>
     <article class="w-full">
       <div class="flex">
-        <h4 class="font-bold mr-2">Usuario</h4>
-        <span class="text-sm text-gray-600">1 Hora</span>
+        <h4 class="font-bold mr-2">{{ comment.user.name }}</h4>
+        <span class="text-sm text-gray-600">{{ comment.ago }}</span>
       </div>
       <div>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam laborum molestiae placeat! Officiis vero aperiam itaque eaque. Quam, vitae? Ducimus voluptatibus dolores magnam atque a rem saepe amet maiores aspernatur!</p>
+        <div v-if="comment.edit">
+          <Loading v-if="comment.loading" class="text-blue-700 w-full mt-2" />
+          <input
+            v-else
+            :value="comment.content"
+            @keyup.enter="updateComment([$event], comment.id)"
+            @keydown.esc="editComment(comment.id, false)"
+            class="w-full px-3 py-2 border rounded-lg focus:outline-none"
+          />
+          <button @click="editComment(comment.id, false)" class="text-blue-800 hover:text-blue-700">Cancelar</button>
+        </div>
+        <p v-else>{{ comment.content }}</p>
       </div>
     </article>
   </section>
