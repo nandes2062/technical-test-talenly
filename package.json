@@ -20,6 +20,7 @@
     "@nuxtjs/auth-next": "5.0.0-1612791489.a5d8c28",
     "@nuxtjs/axios": "^5.12.5",
     "core-js": "^3.8.3",
+    "moment": "^2.29.1",
     "nuxt": "^2.14.12",
     "nuxt-fontawesome": "^0.4.0",
     "v-click-outside": "^3.1.2",

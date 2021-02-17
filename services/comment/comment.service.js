@@ -1,6 +1,6 @@
-const resource = `/comment`
+const resource = '/comment'
 
-export const CommentService = ($axios) => ({
+export const CommentService = $axios => ({
   create (payload) {
     return $axios.$post(`${resource}/create`, payload)
   },
@@ -8,6 +8,6 @@ export const CommentService = ($axios) => ({
     return $axios.$post(`${resource}/${id}/update`, payload)
   },
   delete (id) {
-    return $axios.$post(`${resource}/${id}`)
+    return $axios.$delete(`${resource}/${id}`)
   }
 })

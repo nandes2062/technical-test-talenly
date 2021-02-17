@@ -1,8 +1,22 @@
-export const state = {
-  currentContent: {}
-}
+export const state = () => ({
+  currentContent: {
+    article: '',
+    content_type_id: null,
+    created_at: '',
+    description: '',
+    id: null,
+    progress: 0,
+    title: '',
+    updated_at: '',
+    video_url: ''
+  }
+})
 
-export const getters = {}
+export const getters = {
+  currentContentId: (state) => {
+    return state.currentContent.id
+  }
+}
 
 export const mutations = {
   SET_CURRENT_CONTENT (state, currentContent) {

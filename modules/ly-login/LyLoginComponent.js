@@ -1,3 +1,4 @@
+import { mapActions } from 'vuex'
 export default {
   name: 'LyLogin',
   data () {
@@ -8,7 +9,13 @@ export default {
       }
     }
   },
+  mounted () {
+    this.destroyMe()
+  },
   methods: {
+    ...mapActions({
+      destroyMe: 'me/destroyMe'
+    }),
     login () {
       this.$auth.loginWith('login', {
         data: this.postData
