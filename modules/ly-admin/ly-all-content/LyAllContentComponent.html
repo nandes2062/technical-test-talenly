@@ -29,7 +29,7 @@
         </div>
         <div class="text-blue-700 h-full flex items-center">
           <font-awesome-icon v-if="item.progress >= 10" class="text-3xl" :icon="['fas', 'check-circle']" />
-          <radial-progress-bar
+          <RadialProgressBar
             v-else
             innerStrokeColor="#e2e8f0"
             startColor="#3182ce"
@@ -38,8 +38,8 @@
             :innerStrokeWidth="4"
             :diameter="32"
             :completed-steps="item.progress"
-            :total-steps="totalSteps">
-          </radial-progress-bar>
+            :total-steps="totalSteps"
+          />
         </div>
       </div>
     </article>

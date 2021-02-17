@@ -1,5 +1,5 @@
 import { mapState, mapGetters, mapActions } from 'vuex'
-import RadialProgressBar from 'vue-radial-progress'
+import RadialProgressBar from '@/components/RadialProgressBar'
 export default {
   name: 'LyAllContentComponent',
   components: {
