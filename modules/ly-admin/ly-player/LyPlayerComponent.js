@@ -35,19 +35,21 @@ export default {
      */
     playingVideo () {
       setInterval(async () => {
-        if (this.postData.progress < 10) {
-          try {
-            this.postData.progress++
-            const { content } = await this.$ServiceRepository.ContentService.updateProgress(this.currentContent.id, this.postData)
-            this.setCurrentContent(content)
-          } catch (error) {
-            this.$swal({
-              position: 'top-end',
-              icon: 'error',
-              title: error,
-              showConfirmButton: false,
-              timer: 1500
-            })
+        if (this.$auth.loggedIn) {
+          if (this.postData.progress < 10) {
+            try {
+              this.postData.progress++
+              const { content } = await this.$ServiceRepository.ContentService.updateProgress(this.currentContent.id, this.postData)
+              this.setCurrentContent(content)
+            } catch (error) {
+              this.$swal({
+                position: 'top-end',
+                icon: 'error',
+                title: error,
+                showConfirmButton: false,
+                timer: 1500
+              })
+            }
           }
         }
       }, 10000)
