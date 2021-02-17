@@ -142,6 +142,9 @@ export default {
           return { ...v, edit: state }
         } else { return v }
       })
+      if (state) {
+        this.closeDropdown()
+      }
     },
     loadingComment (id, state) {
       this.comments = this.comments.map((v, k) => {
